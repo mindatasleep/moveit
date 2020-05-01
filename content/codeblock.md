@@ -24,3 +24,19 @@ The following is a code block with diff. Lines with `+` highlighted in green sha
 ```javascript react-live=true
 <button className={'btn btn-default'}>Change my text</button>
 ```
+
+## Ejemplo
+
+```sql
+-- a circle within a circle
+SELECT ST_Within(smallc,smallc) As smallinsmall,
+	ST_Within(smallc, bigc) As smallinbig,
+	ST_Within(bigc,smallc) As biginsmall,
+	ST_Within(ST_Union(smallc, bigc), bigc) as unioninbig,
+	ST_Within(bigc, ST_Union(smallc, bigc)) as biginunion,
+	ST_Equals(bigc, ST_Union(smallc, bigc)) as bigisunion
+FROM
+(
+SELECT ST_Buffer(ST_GeomFromText('POINT(50 50)'), 20) As smallc,
+	ST_Buffer(ST_GeomFromText('POINT(50 50)'), 40) As bigc) As foo;
+```
